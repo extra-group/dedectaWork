@@ -75,6 +75,7 @@
                         </th> -->
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr v-for="post in allPost" :key="post.id" class="bg-white border-b dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap capitalize">
@@ -103,11 +104,18 @@
                 </tbody>
             </table>
         </div>
+        <div v-if="loading" class="mx-auto w-80 border-none h-">
+            <client-only>
+                <Vue3Lottie :animationData="loadingAnimation" :backgroundColor="'transparent'" :loop="true" />
+            </client-only>
+        </div>
     </div>
 </template>
 
 <script setup>
+import loadingAnimation from "~/assets/animation/loading.json"
 import { usePostStore } from "~/store/posts";
+const loading = ref(false)
 const searchKey = ref(''); // Arama anahtarı
 const open = ref(true)
 const oldToNew = ref(true)
@@ -261,6 +269,7 @@ watch(term, (newVal) => {
 
 const fetchAllPosts = async () => {
     try {
+        loading.value = true
         await Promise.all([getTwitterPosts(), getInstagramPosts()]);
         allPost.value = [...originalPosts.value];
         postStore.emptyPosts()
@@ -268,6 +277,8 @@ const fetchAllPosts = async () => {
         orderByDate()
     } catch (error) {
         console.error("Error fetching posts:", error);
+    } finally {
+        loading.value = false
     }
 };
 
