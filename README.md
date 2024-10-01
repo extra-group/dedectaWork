@@ -8,11 +8,14 @@
 
 ## About The Project
 
+[screen-capture.webm](https://github.com/user-attachments/assets/d5b3d87d-dcb1-4fa5-b6a1-33abfcd6f37b)
+
+
 - Users can search for posts and reels across multiple social media platforms using hashtags.
 - Search results can be sorted by date from oldest to newest.
 - Recent search results are saved and automatically displayed when the user revisits the site.
 - Search results are presented to the user as graphical statistics based on platform and date.
-
+- Live Link: https://dedectawork.pages.dev/
 ### Built With
 
 - Nuxt JS
