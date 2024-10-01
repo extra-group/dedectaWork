@@ -18,6 +18,7 @@
 - Nuxt JS
 - TailwindCSS
 - Pinia
+- Chart.js
 
 ## Getting Started
 
