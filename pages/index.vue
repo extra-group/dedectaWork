@@ -54,6 +54,5 @@
 const isHiddenMenu = ref(false)
 function hideLeftMenu() {
     isHiddenMenu.value = !isHiddenMenu.value
-    console.log(isHiddenMenu);
 }
 </script>

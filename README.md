@@ -1,75 +1,59 @@
-# Nuxt 3 Minimal Starter
+# Social Media Search Posts
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+- [About The Project](#about-the-project)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+- [Routes](#routes)
 
-## Setup
+## About The Project
 
-Make sure to install the dependencies:
+- Users can search for posts and reels across multiple social media platforms using hashtags.
+- Search results can be sorted by date from oldest to newest.
+- Recent search results are saved and automatically displayed when the user revisits the site.
+- Search results are presented to the user as graphical statistics based on platform and date.
 
-```bash
-# npm
-npm install
+### Built With
 
-# pnpm
-pnpm install
+- Nuxt JS
+- TailwindCSS
+- Pinia
 
-# yarn
-yarn install
+## Getting Started
 
-# bun
-bun install
-```
+- Twitter Api
 
-## Development Server
+  - https://rapidapi.com/omarmhaimdat/api/twitter154
 
-Start the development server on `http://localhost:3000`:
+- Instagram Api
 
-```bash
-# npm
-npm run dev
+  - https://rapidapi.com/social-api1-instagram/api/instagram-scraper-api2
 
-# pnpm
-pnpm run dev
+### Installation
 
-# yarn
-yarn dev
+- You need to add the following variables to environment file(.env).
 
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
+  | Name              | Type   | Example                                                      |
+  | ----------------- | ------ | ------------------------------------------------------------ |
+  | API_INSTAGRAM_URL | string | https://instagram-scraper-api2.p.rapidapi.com/v1.1/hashtag   |
+  | API_TWITTER_URL   | string | https://twitter154.p.rapidapi.com/search/search/continuation |
+  | API_KEY_TWITTER   | string | af717fa85cmsh5c905eb77e872c3p184c12jsnac491d5ca93b           |
+  | API_KEY_INSTAGRAM | string | d8e11cc399msh5955dcb503544dap13dc2ejsn4d181a8ab1cf           |
 
 ```bash
-# npm
-npm run build
+  npm install
 
-# pnpm
-pnpm run build
+  # for development server
+  npm run dev
 
-# yarn
-yarn build
-
-# bun
-bun run build
+  # for production server
+  npm run build
+  npm run preview
 ```
 
-Locally preview production build:
+## Routes
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+| Name       | Explanation             |
+| ---------- | ----------------------- |
+| /          | Where searches are made |
+| /statistic | Showing statistics      |

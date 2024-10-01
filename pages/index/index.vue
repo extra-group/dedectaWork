@@ -21,7 +21,7 @@
                         value-attribute="value" multiple placeholder="Select Platform" />
                 </div>
             </div>
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <table class="w-full text-xs xl:text-sm text-left text-gray-500 dark:text-gray-400">
                 <caption class="p-5 text-lg font-semibold text-left text-gray-900 bg-white">
                     Platform
                     <div class="flex items-center justify-between">
@@ -43,7 +43,7 @@
                     </div>
 
                 </caption>
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50  dark:text-gray-400">
+                <thead class="text-xs xl:text-sm text-gray-700 uppercase bg-gray-50  dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3 whitespace-nowrap">
                             Platform name
@@ -78,22 +78,23 @@
 
                 <tbody>
                     <tr v-for="post in allPost" :key="post.id" class="bg-white border-b dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap capitalize">
+                        <th scope="row"
+                            class="md:px-6 md:py-4 px-2 py-1 font-medium text-gray-900 whitespace-nowrap capitalize">
                             {{ post.platform }}
                         </th>
-                        <td class="px-6 py-4">
+                        <td class="md:px-6 md:py-4 px-2 py-1">
                             {{ post.username }}
                         </td>
-                        <td :title="post.contentText" class="px-6 py-4 line-clamp-1 cursor-progress">
+                        <td :title="post.contentText" class="md:px-6 md:py-4 px-2 py-1 line-clamp-1 cursor-progress">
                             {{ post.contentText }}
                         </td>
-                        <td class="px-6 py-4">
-                            {{ post.likesCount }}
+                        <td class="md:px-6 md:py-4 px-2 py-1">
+                            {{ post.likesCount || '-' }}
                         </td>
-                        <td class="px-6 py-4">
-                            {{ post.shareCount }}
+                        <td class="md:px-6 md:py-4 px-2 py-1">
+                            {{ post.shareCount || '-' }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="md:px-6 md:py-4 px-2 py-1">
                             {{ new Date(post.createdDate).toLocaleString('tr-TR') }}
                         </td>
                         <!-- <td class="px-6 py-4 text-right">
@@ -115,6 +116,8 @@
 <script setup>
 import loadingAnimation from "~/assets/animation/loading.json"
 import { usePostStore } from "~/store/posts";
+const runtimeConfig = useRuntimeConfig();
+
 const loading = ref(false)
 const searchKey = ref(''); // Arama anahtarı
 const open = ref(true)
@@ -126,13 +129,6 @@ const term = ref(postStore.getKey)
 
 
 const items = [
-    // {
-    //     label: 'Facebook',
-    //     value: 'facebook',
-    //     avatar: {
-    //         src: 'https://api.iconify.design/ic:baseline-facebook.svg'
-    //     }
-    // },
     {
         label: 'Twitter',
         value: 'twitter',
@@ -151,7 +147,7 @@ const items = [
 const selectedPlatforms = ref(items.map(item => item.value));
 
 const getTwitterPosts = async () => {
-    const url = 'https://twitter154.p.rapidapi.com/search/search/continuation?' + new URLSearchParams({
+    const url = runtimeConfig.public.apiURLTwitter + new URLSearchParams({
         query: term.value,
         section: 'top',
         min_likes: '10',
@@ -162,7 +158,7 @@ const getTwitterPosts = async () => {
     const options = {
         method: 'GET',
         headers: {
-            'x-rapidapi-key': 'af717fa85cmsh5c905eb77e872c3p184c12jsnac491d5ca93b',
+            'x-rapidapi-key': runtimeConfig.public.apiKeyTwitter,
             'x-rapidapi-host': 'twitter154.p.rapidapi.com'
         }
     };
@@ -170,7 +166,6 @@ const getTwitterPosts = async () => {
     try {
         const response = await fetch(url, options);
         const result = await response.json();
-        // console.log(result);
         result.results.forEach(item => {
             originalPosts.value.push({
                 id: item.tweet_id,
@@ -184,7 +179,6 @@ const getTwitterPosts = async () => {
             });
         });
 
-        // console.log(result);
 
     } catch (error) {
         console.error(error);
@@ -192,20 +186,19 @@ const getTwitterPosts = async () => {
     allPost.value = [...originalPosts.value];
 }
 const getInstagramPosts = async () => {
-    const url = 'https://instagram-scraper-api2.p.rapidapi.com/v1.1/hashtag?' + new URLSearchParams({
+    const url = runtimeConfig.public.apiURLInstagram + new URLSearchParams({
         hashtag: term.value
     });
     const options = {
         method: 'GET',
         headers: {
-            'x-rapidapi-key': 'd8e11cc399msh5955dcb503544dap13dc2ejsn4d181a8ab1cf',
+            'x-rapidapi-key': runtimeConfig.public.apiKeyInstagram,
             'x-rapidapi-host': 'instagram-scraper-api2.p.rapidapi.com'
         }
     };
     try {
         const response = await fetch(url, options);
         const result = await response.json();
-        // console.log(result);
         result.data.items.forEach(item => {
             originalPosts.value.push({
                 id: item.id || 0,
@@ -213,8 +206,8 @@ const getInstagramPosts = async () => {
                 contentText: item.caption_text || 0,
                 mediaConten: item.image_versions[0] || 0,
                 createdDate: new Date(item.taken_at) || 0,
-                likesCount: item.like_count || 0,
-                shareCount: item?.retweet_count || 0,
+                likesCount: item.like_count,
+                shareCount: item?.retweet_count,
                 platform: 'instagram'
             });
         });
@@ -288,12 +281,5 @@ const getNewData = () => {
     fetchAllPosts()
 }
 
-
-onMounted(() => {
-    // getTwitterPosts();
-    // cloneTwitter();
-    // getInstagramPosts();
-    // cloneInstagram()
-})
 
 </script>

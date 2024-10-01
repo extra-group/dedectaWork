@@ -1,5 +1,12 @@
 <template>
     <div>
+        <h1 class="sm:text-4xl text-xl ml-2 sm:pt-10 py-2 font-bold">İstatistikler</h1>
+        <h2 class="italic text-base sm:text-xl ml-2 ">Zamana göre gönderi sayısı grafiği</h2>
+        <div class="py-6">
+            <hr>
+        </div>
+    </div>
+    <div>
         <Bar :data="chartData" :options="chartOptions" />
     </div>
 </template>
@@ -10,7 +17,6 @@
 import { usePostStore } from "~/store/posts";
 const postStore = usePostStore();
 const posts = postStore.getPosts
-console.log(posts);
 
 import { Bar } from 'vue-chartjs';
 import {
@@ -63,7 +69,6 @@ const dateCounts = uniquePostDates.reduce(
     },
     { instagram: [], twitter: [] },
 );
-console.log(dateCounts)
 
 const chartData = ref({
     labels: uniquePostDates,
@@ -82,7 +87,7 @@ const chartData = ref({
 });
 const chartOptions = ref({
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
 });
 
 
@@ -93,7 +98,6 @@ const chartOptions = ref({
 onMounted(() => {
     // getTwitterPosts();
     // cloneTwitter();
-
 })
 
 
